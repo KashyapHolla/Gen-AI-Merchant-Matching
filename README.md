@@ -1,6 +1,5 @@
 # Gen-AI-Merchant-Matching
-
-**Turn raw card‑transaction descriptors into clean, structured merchant records using a retrieval‑augmented LLM pipeline.**
+Turn raw card‑transaction descriptors into clean, structured merchant records using a retrieval‑augmented LLM pipeline.
 
 A few‑shot parser pulls out key fields, a hybrid Elasticsearch + FAISS search retrieves possible businesses, and a lightweight LLM ranks & explains the single best match—all in well under a second on a laptop.
 
