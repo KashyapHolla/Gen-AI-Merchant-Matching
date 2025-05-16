@@ -41,20 +41,6 @@ async def parse_descriptor(desc: str) -> Dict:
 # ------------------------------------------------------------------
 # 2.  Reranker helper for ONE candidate
 # ------------------------------------------------------------------
-def build_rerank_prompt(descriptor: str, candidate: Dict) -> List:
-    """Build the prompt for reranking a candidate"""
-    sys = SystemMessage(
-        content=("You are a merchant matching expert. "
-                 "Score 0-1 similarity between Descriptor and Candidate merchant. "
-                 "A score of 1 means the descriptor perfectly matches the candidate merchant. "
-                 "A score of 0 means they are completely different. "
-                 "Consider brand name, location, and merchant ID if available. "
-                 "Output JSON {\"score\":float, \"why\":string} with your reasoning.")
-    )
-    usr = HumanMessage(
-        content=f"Descriptor: \"{descriptor}\"\nCandidate:\n{json.dumps(candidate)}")
-    return [sys, usr]
-
 def parse_rerank_output(text: str) -> Tuple[float, str]:
     """Parse the reranker output to extract score and reasoning"""
     try:
@@ -86,6 +72,20 @@ def parse_rerank_output(text: str) -> Tuple[float, str]:
             why = why_match.group(1)
             
         return score, why
+    
+def build_rerank_prompt(descriptor: str, candidate: Dict) -> List:
+    """Build the prompt for reranking a candidate"""
+    sys = SystemMessage(
+        content=("You are a merchant matching expert. "
+                 "Score 0-1 similarity between Descriptor and Candidate merchant. "
+                 "A score of 1 means the descriptor perfectly matches the candidate merchant. "
+                 "A score of 0 means they are completely different. "
+                 "Consider brand name, location, and merchant ID if available. "
+                 "Output JSON {\"score\":float, \"why\":string} with your reasoning.")
+    )
+    usr = HumanMessage(
+        content=f"Descriptor: \"{descriptor}\"\nCandidate:\n{json.dumps(candidate)}")
+    return [sys, usr]
 
 # ------------------------------------------------------------------
 # 3.  Optional judge helper
